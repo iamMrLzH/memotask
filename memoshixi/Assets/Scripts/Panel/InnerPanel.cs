@@ -7,6 +7,8 @@ public class InnerPanel : MonoBehaviour
 {
     GameObject inPanel;
     GameObject settingPanel;
+    GameObject diePanel;
+    GameObject winPanel;
     AudioSource camAudio;
     AudioSource canvAudio;
     public Text length;
@@ -17,6 +19,9 @@ public class InnerPanel : MonoBehaviour
     public Button effectBtn;
     public Button retBtn;
     public Button mainPanelBtn;
+    public Button[] buttons;
+    public AudioClip bgm;
+    public AudioClip btnSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,23 +29,41 @@ public class InnerPanel : MonoBehaviour
         {
             if (child.name == "InPanel")
                 inPanel = child.gameObject;
-            else
+            if(child.name=="SettingPanel")
                 settingPanel = child.gameObject;
+            if (child.name == "DiePanel")
+                diePanel = child.gameObject;
+            if (child.name == "WinPanel")
+                winPanel = child.gameObject;
         }
         inPanel.AddComponent<CanvasGroup>();
         settingPanel.AddComponent<CanvasGroup>();
-        ReturnBtn();
+        Init();
         camAudio = Camera.main.gameObject.AddComponent<AudioSource>();
         camAudio.loop = true;
-        canvAudio = Camera.main.gameObject.AddComponent<AudioSource>();
+        camAudio.clip = bgm;
+        camAudio.Play();
+        canvAudio = gameObject.AddComponent<AudioSource>();
         canvAudio.playOnAwake = false;
         canvAudio.loop = false;
+        canvAudio.clip = btnSound;
         bgmBtn.onClick.AddListener(delegate () { BgmChange(bgmBtn); });
         effectBtn.onClick.AddListener(delegate () { EffectChange(effectBtn); });
         settingBtn.onClick.AddListener(OnSettingClick);
         retBtn.onClick.AddListener(ReturnBtn);
         mainPanelBtn.onClick.AddListener(ReturnMainPanel);
         //还未赋值
+        buttons = transform.GetComponentsInChildren<Button>();
+        foreach(Button btn in buttons)
+        {
+            if (btn.name == "ResetButton")
+                btn.onClick.AddListener(ResetGame);
+            if (btn.name == "RetButton")
+                btn.onClick.AddListener(ReturnMainPanel);
+            if (btn.name == "NextButton")
+                btn.onClick.AddListener(NextBtn);
+        }
+
     }
 
     // Update is called once per frame
@@ -50,8 +73,11 @@ public class InnerPanel : MonoBehaviour
         speed.text = Node.speed.ToString();
         score.text = Node.score.ToString();
     }
-    void OnSettingClick()
+    void OnSettingClick() //点击设置
     {
+        if (canvAudio.enabled == true)
+            canvAudio.Play();
+        Time.timeScale = 0;
         inPanel.GetComponent<CanvasGroup>().alpha = 0;
         inPanel.GetComponent<CanvasGroup>().interactable = false;
         inPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -59,7 +85,7 @@ public class InnerPanel : MonoBehaviour
         settingPanel.GetComponent<CanvasGroup>().interactable = true;
         settingPanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
-    void ReturnBtn()
+    void Init() //初始化
     {
         inPanel.GetComponent<CanvasGroup>().alpha = 1;
         inPanel.GetComponent<CanvasGroup>().interactable = true;
@@ -68,12 +94,28 @@ public class InnerPanel : MonoBehaviour
         settingPanel.GetComponent<CanvasGroup>().interactable = false;
         settingPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
-    void ReturnMainPanel()
+    void ReturnBtn()//返回游戏
     {
+        if (canvAudio.enabled == true)
+            canvAudio.Play();
+        Time.timeScale = 1;
+        inPanel.GetComponent<CanvasGroup>().alpha = 1;
+        inPanel.GetComponent<CanvasGroup>().interactable = true;
+        inPanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        settingPanel.GetComponent<CanvasGroup>().alpha = 0;
+        settingPanel.GetComponent<CanvasGroup>().interactable = false;
+        settingPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+    }
+    void ReturnMainPanel()//回主菜单
+    {
+        if (canvAudio.enabled == true)
+            canvAudio.Play();
         SceneManager.LoadScene("Start");//要切换到的场景名
     }
-    void BgmChange(Button btn)
+    void BgmChange(Button btn)//bgm音量有无
     {
+        if (canvAudio.enabled == true)
+            canvAudio.Play();
         if (btn.GetComponent<Image>().sprite.name == "true")
         {
             Camera.main.transform.GetComponent<AudioSource>().enabled = false;
@@ -86,8 +128,10 @@ public class InnerPanel : MonoBehaviour
             btn.GetComponent<Image>().sprite = (Sprite)Resources.Load<Sprite>("PanelObj/true");
         }
     }
-    void EffectChange(Button btn)
+    void EffectChange(Button btn)//音效音量有无
     {
+        if (canvAudio.enabled == true)
+            canvAudio.Play();
         if (btn.GetComponent<Image>().sprite.name == "true")
         {
             transform.GetComponent<AudioSource>().enabled = false;
@@ -99,5 +143,36 @@ public class InnerPanel : MonoBehaviour
             transform.GetComponent<AudioSource>().enabled = true;
             btn.GetComponent<Image>().sprite = (Sprite)Resources.Load<Sprite>("PanelObj/true");
         }
+    }
+    void ResetGame()//重置游戏
+    {
+        string name = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(name);
+    }
+    void NextBtn()//下一关
+    {
+        string name = SceneManager.GetActiveScene().name;
+        if (name == "Level4")
+            return;
+        string last = name.Substring(5, 6);
+        string forwardStr = "Level";
+        int a = int.Parse(last);
+        string newLast = (a + 1).ToString();
+        string newName = forwardStr + newLast;
+        SceneManager.LoadScene(newName);
+    }
+    public void DiePanel()
+    {
+        Time.timeScale = 0;
+        diePanel.GetComponent<CanvasGroup>().alpha = 1;
+        diePanel.GetComponent<CanvasGroup>().interactable = true;
+        diePanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
+    }
+    public void WinPanel()
+    {
+        Time.timeScale = 0;
+        winPanel.GetComponent<CanvasGroup>().alpha = 1;
+        winPanel.GetComponent<CanvasGroup>().interactable = true;
+        winPanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 }

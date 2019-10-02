@@ -73,7 +73,9 @@
     <Compile Include="Assets\Scripts\Body.cs" />
     <Compile Include="Assets\Scripts\GameInit.cs" />
     <Compile Include="Assets\Scripts\Head.cs" />
+    <Compile Include="Assets\Scripts\MapPoint.cs" />
     <Compile Include="Assets\Scripts\Navgation.cs" />
+    <Compile Include="Assets\Scripts\NewBehaviourScript.cs" />
     <Compile Include="Assets\Scripts\Node.cs" />
     <Compile Include="Assets\Scripts\Panel\InnerPanel.cs" />
     <Compile Include="Assets\Scripts\Panel\PanelManger.cs" />

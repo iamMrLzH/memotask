@@ -11,6 +11,8 @@ TagManager:
   - SmartGrass
   - Hudun
   - Food
+  - Wall
+  - Head
   layers:
   - Default
   - TransparentFX
