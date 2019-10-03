@@ -69,17 +69,24 @@
     <Compile Include="Assets\PolyNav2D\Scripts\Runtime\PolyNav2D.cs" />
     <Compile Include="Assets\PolyNav2D\Scripts\Runtime\PolyNavAgent.cs" />
     <Compile Include="Assets\PolyNav2D\Scripts\Runtime\PolyNavObstacle.cs" />
+    <Compile Include="Assets\Scripts\AddBody.cs" />
     <Compile Include="Assets\Scripts\AudioChange.cs" />
     <Compile Include="Assets\Scripts\Body.cs" />
     <Compile Include="Assets\Scripts\GameInit.cs" />
     <Compile Include="Assets\Scripts\Head.cs" />
+    <Compile Include="Assets\Scripts\Level3Stick.cs" />
+    <Compile Include="Assets\Scripts\Level4Stick.cs" />
     <Compile Include="Assets\Scripts\MapPoint.cs" />
+    <Compile Include="Assets\Scripts\Mode3Map.cs" />
+    <Compile Include="Assets\Scripts\Modes\Mode1.cs" />
+    <Compile Include="Assets\Scripts\Modes\Mode2.cs" />
     <Compile Include="Assets\Scripts\Navgation.cs" />
     <Compile Include="Assets\Scripts\NewBehaviourScript.cs" />
     <Compile Include="Assets\Scripts\Node.cs" />
     <Compile Include="Assets\Scripts\Panel\InnerPanel.cs" />
     <Compile Include="Assets\Scripts\Panel\PanelManger.cs" />
     <Compile Include="Assets\Scripts\RandomMap.cs" />
+    <Compile Include="Assets\Scripts\StickDistroy.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>E:/gitres/unityshixi/memoshixi/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

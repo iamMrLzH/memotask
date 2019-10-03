@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 3095391958132707147}
   - component: {fileID: 5430599334907968962}
   - component: {fileID: 6997506527032724608}
+  - component: {fileID: -6341135055954429758}
+  - component: {fileID: -8627028859374935411}
   m_Layer: 0
   m_Name: head
   m_TagString: Head
@@ -134,15 +136,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8120b13637bf24743ac76059837a05bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position: {x: -28.966612, y: -1.677735, z: 0}
+  position: {x: 0, y: 0, z: 0}
+  redius: 1.78
   rig: {fileID: 7510179329846810607}
-  time: 0
-  originSpeed: 15
-  addSpeedTime: 5
+  speed: 10
+  scale: 0.5
+  pos: []
+  snake: []
   audi: {fileID: 5430599334907968962}
   sceneName: Mode1
-  smartTime: 0
-  line: {fileID: 0}
+  num: 0
 --- !u!82 &5430599334907968962
 AudioSource:
   m_ObjectHideFlags: 0
@@ -335,3 +338,34 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &-6341135055954429758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5653507759977317400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9804e4b6b45c190459e34d198aef628d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 0
+  originSpeed: 0
+  addSpeedTime: 5
+  smartTime: 0
+  line: {fileID: 0}
+  instance: {fileID: 0}
+--- !u!114 &-8627028859374935411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5653507759977317400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3c56b8f6b3695542a6c58efbd9f0aa6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instance: {fileID: 0}

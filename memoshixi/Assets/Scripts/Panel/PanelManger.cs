@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class PanelManger : MonoBehaviour
 {
     Dictionary<string,GameObject> panels =new Dictionary<string, GameObject>();//存储全部开始界面panel
@@ -40,10 +41,12 @@ public class PanelManger : MonoBehaviour
                 btn.onClick.AddListener(delegate () { ModeSelect(btn.name); });
             if (btn.name.Contains("Switch"))
                 btn.onClick.AddListener(delegate (){ Switch(btn); });
-            if(btn.name.Contains("_"))
+            if(btn.name.Contains("_"))//选皮肤
                 btn.onClick.AddListener(delegate () { SkinChoose(btn.name); });
             if (btn.name.Contains("snake"))
                 btn.onClick.AddListener(delegate () { ImageChange(btn.name); });
+            if (btn.name.Contains("Level")&&btn.name!="LevelPanel")
+                btn.onClick.AddListener(delegate () { LevelChoose(btn.name); });
         }
     }
 
@@ -74,7 +77,8 @@ public class PanelManger : MonoBehaviour
     }
     void ModeSelect(string name)//模式选择
     {
-
+            Time.timeScale = 1;
+            SceneManager.LoadSceneAsync(name); 
     }
     void Switch(Button btn)//音量恢复与置零
     {
@@ -125,5 +129,10 @@ public class PanelManger : MonoBehaviour
     {
         if (audi.enabled == true)
             audi.Play();
+    }
+    void LevelChoose(string name)
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadSceneAsync(name);
     }
 }

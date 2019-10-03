@@ -5,12 +5,13 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public class InnerPanel : MonoBehaviour
 {
-    GameObject inPanel;
+    //GameObject inPanel;
     GameObject settingPanel;
     GameObject diePanel;
     GameObject winPanel;
     AudioSource camAudio;
     AudioSource canvAudio;
+    public static InnerPanel instance;
     public Text length;
     public Text speed;
     public Text score;
@@ -22,13 +23,21 @@ public class InnerPanel : MonoBehaviour
     public Button[] buttons;
     public AudioClip bgm;
     public AudioClip btnSound;
+    public Button nextBtn;//处理第四关
+    public void Awake()
+    {
+        instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
+        if (SceneManager.GetActiveScene().name == "Level4")
+            Destroy(nextBtn);
+        //inPanel = GameObject.Find("BgCanvas/InPanel");
         foreach (Transform child in transform)//对panel赋值
         {
-            if (child.name == "InPanel")
-                inPanel = child.gameObject;
+            /*if (child.name == "InPanel")
+                inPanel = child.gameObject;*/
             if(child.name=="SettingPanel")
                 settingPanel = child.gameObject;
             if (child.name == "DiePanel")
@@ -36,7 +45,7 @@ public class InnerPanel : MonoBehaviour
             if (child.name == "WinPanel")
                 winPanel = child.gameObject;
         }
-        inPanel.AddComponent<CanvasGroup>();
+        //inPanel.AddComponent<CanvasGroup>();
         settingPanel.AddComponent<CanvasGroup>();
         Init();
         camAudio = Camera.main.gameObject.AddComponent<AudioSource>();
@@ -69,8 +78,8 @@ public class InnerPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        length.text = Head.snake.Count + 1.ToString();
-        speed.text = Node.speed.ToString();
+        length.text = Head.instance.snake.Count + 1.ToString();
+        speed.text = Head.instance.speed.ToString();
         score.text = Node.score.ToString();
     }
     void OnSettingClick() //点击设置
@@ -78,18 +87,18 @@ public class InnerPanel : MonoBehaviour
         if (canvAudio.enabled == true)
             canvAudio.Play();
         Time.timeScale = 0;
-        inPanel.GetComponent<CanvasGroup>().alpha = 0;
-        inPanel.GetComponent<CanvasGroup>().interactable = false;
-        inPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+       // inPanel.GetComponent<CanvasGroup>().alpha = 0;
+        //inPanel.GetComponent<CanvasGroup>().interactable = false;
+        //inPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
         settingPanel.GetComponent<CanvasGroup>().alpha = 1;
         settingPanel.GetComponent<CanvasGroup>().interactable = true;
         settingPanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
     void Init() //初始化
     {
-        inPanel.GetComponent<CanvasGroup>().alpha = 1;
-        inPanel.GetComponent<CanvasGroup>().interactable = true;
-        inPanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        //inPanel.GetComponent<CanvasGroup>().alpha = 1;
+       // inPanel.GetComponent<CanvasGroup>().interactable = true;
+       // inPanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
         settingPanel.GetComponent<CanvasGroup>().alpha = 0;
         settingPanel.GetComponent<CanvasGroup>().interactable = false;
         settingPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -99,9 +108,9 @@ public class InnerPanel : MonoBehaviour
         if (canvAudio.enabled == true)
             canvAudio.Play();
         Time.timeScale = 1;
-        inPanel.GetComponent<CanvasGroup>().alpha = 1;
-        inPanel.GetComponent<CanvasGroup>().interactable = true;
-        inPanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        //inPanel.GetComponent<CanvasGroup>().alpha = 1;
+        //inPanel.GetComponent<CanvasGroup>().interactable = true;
+        //inPanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
         settingPanel.GetComponent<CanvasGroup>().alpha = 0;
         settingPanel.GetComponent<CanvasGroup>().interactable = false;
         settingPanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -146,15 +155,17 @@ public class InnerPanel : MonoBehaviour
     }
     void ResetGame()//重置游戏
     {
+        Time.timeScale = 1;
         string name = SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene(name);
+        SceneManager.LoadSceneAsync(name);
     }
     void NextBtn()//下一关
     {
+        Time.timeScale = 1;
         string name = SceneManager.GetActiveScene().name;
-        if (name == "Level4")
+        if (name == "Level4")//***
             return;
-        string last = name.Substring(5, 6);
+        string last = name.Substring(5, 1);
         string forwardStr = "Level";
         int a = int.Parse(last);
         string newLast = (a + 1).ToString();

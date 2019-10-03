@@ -4,32 +4,29 @@ using UnityEngine;
 
 public class Body : Node
 {
+    public Head instance;
+    int num;
     // Start is called before the first frame update
+
     void Start()
     {
+        instance = Head.instance;
+        num = instance.num;
         rig = transform.GetComponent<Rigidbody2D>();
-        this.position = transform.position;
-        Head.snake.Add(this);//添加进链表
+        instance.snake.Add(this);//添加进链表
+        speed = instance.speed;
     }
-
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        this.position = transform.position;//跟新坐标
-        BodyMove();//移动控制
+        BodyMove();
+        num = instance.num;
     }
+    
     void BodyMove()
     {
-        int index = Head.snake.IndexOf(this);
-        Vector3 target = Head.snake[index - 1].position;
-        Vector3 a = target - transform.position;
-        Vector3 b = a.normalized;
-        float distance = Vector3.Distance(transform.position, target);
-        if (distance < redius * scale)
-        {
-            rig.velocity = Vector2.zero;
-            return;
-        }
-        rig.velocity = new Vector2(b.x * speed, b.y * speed);
+        int index = instance.snake.IndexOf(this);
+        
+        transform.position = instance.snake[0].pos[instance.snake[0].pos.Count - index * num];
     }
 }

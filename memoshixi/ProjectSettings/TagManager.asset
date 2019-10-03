@@ -13,6 +13,12 @@ TagManager:
   - Food
   - Wall
   - Head
+  - Stick
+  - Exit
+  - Key
+  - Lock
+  - Die
+  - Level
   layers:
   - Default
   - TransparentFX
@@ -22,7 +28,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - back
   - 
   - 
   - 
@@ -49,4 +55,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 1555445641
+    locked: 0
+  - name: back
+    uniqueID: 4099587973
     locked: 0

@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
 {
-    static int x = 1;
-    static int y = 2;
-   Vector2 [,] a=new Vector2[x,y];
+   public GameObject obj;
+    Vector3 a = new Vector3();
     // Start is called before the first frame update
     void Start()
     {
-        a[0,0] = Vector2.zero;
+        a= Camera.main.ScreenToWorldPoint(Vector3.zero);
+        Instantiate(obj, a, Quaternion.identity);
     }
 
     // Update is called once per frame
