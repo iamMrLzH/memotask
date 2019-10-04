@@ -19,6 +19,8 @@ TagManager:
   - Lock
   - Die
   - Level
+  - Sphere
+  - Diamond
   layers:
   - Default
   - TransparentFX

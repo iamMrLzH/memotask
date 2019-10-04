@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6997506527032724608}
   - component: {fileID: -6341135055954429758}
   - component: {fileID: -8627028859374935411}
+  - component: {fileID: -4561660831582428637}
   m_Layer: 0
   m_Name: head
   m_TagString: Head
@@ -118,7 +119,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -145,7 +146,6 @@ MonoBehaviour:
   snake: []
   audi: {fileID: 5430599334907968962}
   sceneName: Mode1
-  num: 0
 --- !u!82 &5430599334907968962
 AudioSource:
   m_ObjectHideFlags: 0
@@ -369,3 +369,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   instance: {fileID: 0}
+--- !u!58 &-4561660831582428637
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5653507759977317400}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 5d5155fe563e00d46825f70fcedefade, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1.1850002

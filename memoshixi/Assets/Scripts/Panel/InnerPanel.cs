@@ -15,6 +15,7 @@ public class InnerPanel : MonoBehaviour
     public Text length;
     public Text speed;
     public Text score;
+    public Text finalScore;
     public Button settingBtn;
     public Button bgmBtn;
     public Button effectBtn;
@@ -63,7 +64,7 @@ public class InnerPanel : MonoBehaviour
         mainPanelBtn.onClick.AddListener(ReturnMainPanel);
         //还未赋值
         buttons = transform.GetComponentsInChildren<Button>();
-        foreach(Button btn in buttons)
+        foreach(Button btn in buttons)//canvas里面所有button
         {
             if (btn.name == "ResetButton")
                 btn.onClick.AddListener(ResetGame);
@@ -71,6 +72,8 @@ public class InnerPanel : MonoBehaviour
                 btn.onClick.AddListener(ReturnMainPanel);
             if (btn.name == "NextButton")
                 btn.onClick.AddListener(NextBtn);
+            if (btn.name == "Low" || btn.name == "Mid" || btn.name == "High")
+                btn.onClick.AddListener(delegate () { HardSelect(btn); });
         }
 
     }
@@ -78,9 +81,11 @@ public class InnerPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        length.text = Head.instance.snake.Count + 1.ToString();
-        speed.text = Head.instance.speed.ToString();
+        length.text = (Head.instance.snake.Count + 1).ToString();
+        speed.text = Node.speed.ToString();
         score.text = Node.score.ToString();
+        finalScore.text = Node.score.ToString();
+        //Debug.Log(Node.score.ToString());
     }
     void OnSettingClick() //点击设置
     {
@@ -117,6 +122,9 @@ public class InnerPanel : MonoBehaviour
     }
     void ReturnMainPanel()//回主菜单
     {
+        Node.score=0;
+        Node.scale = 0.5f;
+        Node.redius = 1.78f;
         if (canvAudio.enabled == true)
             canvAudio.Play();
         SceneManager.LoadScene("Start");//要切换到的场景名
@@ -157,6 +165,9 @@ public class InnerPanel : MonoBehaviour
     {
         Time.timeScale = 1;
         string name = SceneManager.GetActiveScene().name;
+        Node.score = 0;
+        Node.scale = 0.5f;
+        Node.redius = 1.78f;
         SceneManager.LoadSceneAsync(name);
     }
     void NextBtn()//下一关
@@ -185,5 +196,16 @@ public class InnerPanel : MonoBehaviour
         winPanel.GetComponent<CanvasGroup>().alpha = 1;
         winPanel.GetComponent<CanvasGroup>().interactable = true;
         winPanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
+    }
+    public void HardSelect(Button btn)
+    {
+        if (btn.name == "Low")
+            Node.speed = 7;
+        if (btn.name == "Mid")
+            Node.speed = 10;
+        if (btn.name == "High")
+            Node.speed = 13;
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

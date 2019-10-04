@@ -17,7 +17,7 @@ public class Mode1 : MonoBehaviour
     {
         instance = Head.instance;
         line = gameObject.GetComponent<LineRenderer>();
-        originSpeed = Head.instance.speed;
+        originSpeed = Node.speed;
     }
 
     // Update is called once per frame
@@ -27,7 +27,7 @@ public class Mode1 : MonoBehaviour
         if (time > 0)
             time -= Time.deltaTime;
         else
-            Head.instance.speed = originSpeed;
+            Node.speed = originSpeed;
         if (smartTime <= 0)
         {
             instance.HeadMove();
@@ -37,7 +37,7 @@ public class Mode1 : MonoBehaviour
         else
             smartTime -= Time.deltaTime;
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         string tag = collision.gameObject.tag;
         if (collision.gameObject.tag == "Bomb")
@@ -50,7 +50,7 @@ public class Mode1 : MonoBehaviour
                 defence = false;
                 return;
             }
-
+            Node.score -= 10;
             int length = Head.instance.snake.Count + 1;
             if (length <= 1)
                 instance.Die();
@@ -63,7 +63,8 @@ public class Mode1 : MonoBehaviour
         {
             Destroy(collision.gameObject);
             time = addSpeedTime;
-            instance.speed *= 2;
+            Node.speed *= 1.5f;
+            Node.score += 2;
         }
         if (collision.gameObject.tag == "Mogu")
         {
@@ -78,6 +79,7 @@ public class Mode1 : MonoBehaviour
             {
                 instance.Lengthadd();
             }
+            Node.score += 10;
         }
         if (collision.gameObject.tag == "Hudun")
         {
@@ -101,6 +103,7 @@ public class Mode1 : MonoBehaviour
                 instance.Lengthdec();
                 instance.Lengthdec();
             }
+            Node.score -= 2;
         }
         if (collision.gameObject.tag == "SmartGrass")
         {
@@ -140,10 +143,10 @@ public class Mode1 : MonoBehaviour
         Vector2 end = path[1];
         Vector2 dir = end - start;
         //rig.velocity = new Vector2(dir.normalized.x * speed, dir.normalized.y * speed);
-        instance.rig.velocity = dir.normalized * instance.speed;
+        instance.rig.velocity = dir.normalized * Node.speed;
         transform.up = instance.rig.velocity.normalized;
         float distance = Vector3.Distance(transform.position, end);
-        while (distance > instance.redius * instance.scale)
+        while (distance > Node.redius * Node.scale)
         {
             distance = Vector3.Distance(transform.position, end);
             yield return new WaitForFixedUpdate();
@@ -154,13 +157,13 @@ public class Mode1 : MonoBehaviour
             int a = index;
             while (index == a)
             {
-                if (Vector3.Distance(transform.position, end) <= instance.redius * instance.scale)
+                if (Vector3.Distance(transform.position, end) <= Node.redius * Node.scale)
                 {
                     //Debug.Log(dir.normalized);
                     start = transform.position;
                     end = path[index + 1];
                     dir = end - start;
-                    instance.rig.velocity = dir.normalized * instance.speed;
+                    instance.rig.velocity = dir.normalized * Node.speed;
                     transform.up = instance.rig.velocity.normalized;
                     index++;
                 }
@@ -176,16 +179,16 @@ public class Mode1 : MonoBehaviour
         dir = end - start;
         // Debug.Log(dir);
         // Debug.Log(end);
-        instance.rig.velocity = dir.normalized * instance.speed;
+        instance.rig.velocity = dir.normalized * Node.speed;
         float dis = Vector3.Distance(transform.position, end);
         //Debug.Log(dis);
         //yield return new WaitUntil(() => Vector3.Distance(transform.position, end) <= redius * scale);
-        while (dis > instance.redius * instance.scale)
+        while (dis > Node.redius * Node.scale)
         {
             //Debug.Log("q");
             start = transform.position;
             dir = end - start;
-            instance.rig.velocity = dir.normalized * instance.speed;
+            instance.rig.velocity = dir.normalized * Node.speed;
             dis = Vector3.Distance(transform.position, end);
             yield return new WaitForFixedUpdate();
         }

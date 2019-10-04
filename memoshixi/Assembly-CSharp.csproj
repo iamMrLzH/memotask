@@ -77,9 +77,15 @@
     <Compile Include="Assets\Scripts\Level3Stick.cs" />
     <Compile Include="Assets\Scripts\Level4Stick.cs" />
     <Compile Include="Assets\Scripts\MapPoint.cs" />
-    <Compile Include="Assets\Scripts\Mode3Map.cs" />
+    <Compile Include="Assets\Scripts\Mode4\CubeRotateL.cs" />
+    <Compile Include="Assets\Scripts\Mode4\CubeRotateR.cs" />
+    <Compile Include="Assets\Scripts\Mode4\DownMoveSphere.cs" />
+    <Compile Include="Assets\Scripts\Mode4\Mode4Map.cs" />
+    <Compile Include="Assets\Scripts\Mode4\RotateSphere.cs" />
+    <Compile Include="Assets\Scripts\Mode4\UpMoveSphere.cs" />
     <Compile Include="Assets\Scripts\Modes\Mode1.cs" />
     <Compile Include="Assets\Scripts\Modes\Mode2.cs" />
+    <Compile Include="Assets\Scripts\Modes\Mode3Map.cs" />
     <Compile Include="Assets\Scripts\Navgation.cs" />
     <Compile Include="Assets\Scripts\NewBehaviourScript.cs" />
     <Compile Include="Assets\Scripts\Node.cs" />

@@ -11,7 +11,7 @@ public class Level4Stick : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        speed=Head.instance.speed / 2;
+        speed= Node.speed / 2;
         stickPre = Resources.Load<GameObject>("Prefabs/BigStick");
         StartCoroutine(MakeStick());
     }

@@ -15,11 +15,7 @@ public class Head : Node
     public int num { get { return (int)(redius * scale / speed / Time.fixedDeltaTime); } }
     private void Awake()
     {
-        //Debug.Log(1);
         instance = this;
-        //num = get{ return (redius * scale / speed / Time.fixedDeltaTime) };
-           // (int)(redius*scale/speed / Time.fixedDeltaTime);
-        InitPos();
     }
     // Start is called before the first frame update
     void Start()
@@ -42,26 +38,26 @@ public class Head : Node
         clips["Grass"] = Resources.Load<AudioClip>("Sound/poisonous grass");
         clips["Hudun"] = Resources.Load<AudioClip>("Sound/small trap");
         clips["SmartGrass"] = Resources.Load<AudioClip>("Sound/get energy");
-       
+        transform.localScale = new Vector3(scale, scale, 1);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        //Debug.Log(num);
         //Debug.Log(2);
         pos.Add(transform.position);
-        if (sceneName != "Mode1")
+        if (sceneName.Contains("Level"))//mode2移动方式
         {
             HeadMove();
             //Debug.Log(1);
         }
-            
         //Debug.Log(num);
     }
-    void InitPos()
+    public void InitPos(int startNum)
     {
-        float smallDis = redius * scale * 2 / (2 * num);
-        for(int i = 0; i <= 2*num - 1; i++)
+        float smallDis = redius * scale * 2 / (startNum * num);
+        for(int i = 0; i <= startNum*num - 1; i++)
         {
             pos.Add(new Vector2(-1 * redius * scale + i * smallDis, 0));
         }
@@ -89,11 +85,19 @@ public class Head : Node
     }
     public void Lengthdec()//长度减
     {
-        Node last = snake[snake.Count - 1];
-        snake.Remove(last);
-        Destroy(last.gameObject);
+        if (snake.Count <= 1)
+        {
+            Die();
+        }
+        else
+        {
+            Node last = snake[snake.Count - 1];
+            snake.Remove(last);
+            Destroy(last.gameObject);
+        }
+
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         foreach(string clipTag in clips.Keys)
         {

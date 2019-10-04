@@ -12,9 +12,10 @@ public class Body : Node
     {
         instance = Head.instance;
         num = instance.num;
+       // Debug.Log(num+"*");
         rig = transform.GetComponent<Rigidbody2D>();
         instance.snake.Add(this);//添加进链表
-        speed = instance.speed;
+        transform.localScale = new Vector3(scale, scale, 1);
     }
     // Update is called once per frame
     void FixedUpdate()
@@ -26,7 +27,8 @@ public class Body : Node
     void BodyMove()
     {
         int index = instance.snake.IndexOf(this);
-        
+        //Debug.Log(instance.snake[0].pos.Count);
+        //Debug.Log( num);
         transform.position = instance.snake[0].pos[instance.snake[0].pos.Count - index * num];
     }
 }
