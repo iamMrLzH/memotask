@@ -74,10 +74,15 @@ public class InnerPanel : MonoBehaviour
                 btn.onClick.AddListener(NextBtn);
             if (btn.name == "Low" || btn.name == "Mid" || btn.name == "High")
                 btn.onClick.AddListener(delegate () { HardSelect(btn); });
+            if (btn.name == "SaveButton")
+                btn.onClick.AddListener(OnSaveClick);
         }
 
     }
-
+    void OnSaveClick()
+    {
+        gameObject.GetComponent<SaveGame>().saveTheGame();
+    }
     // Update is called once per frame
     void Update()
     {

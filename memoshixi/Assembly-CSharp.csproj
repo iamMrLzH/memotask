@@ -77,9 +77,11 @@
     <Compile Include="Assets\Scripts\Level3Stick.cs" />
     <Compile Include="Assets\Scripts\Level4Stick.cs" />
     <Compile Include="Assets\Scripts\MapPoint.cs" />
+    <Compile Include="Assets\Scripts\Mode4\ColorCheck.cs" />
     <Compile Include="Assets\Scripts\Mode4\CubeRotateL.cs" />
     <Compile Include="Assets\Scripts\Mode4\CubeRotateR.cs" />
     <Compile Include="Assets\Scripts\Mode4\DownMoveSphere.cs" />
+    <Compile Include="Assets\Scripts\Mode4\Line.cs" />
     <Compile Include="Assets\Scripts\Mode4\Mode4Map.cs" />
     <Compile Include="Assets\Scripts\Mode4\RotateSphere.cs" />
     <Compile Include="Assets\Scripts\Mode4\UpMoveSphere.cs" />
@@ -92,7 +94,12 @@
     <Compile Include="Assets\Scripts\Panel\InnerPanel.cs" />
     <Compile Include="Assets\Scripts\Panel\PanelManger.cs" />
     <Compile Include="Assets\Scripts\RandomMap.cs" />
+    <Compile Include="Assets\Scripts\Save\LoadInit.cs" />
+    <Compile Include="Assets\Scripts\Save\NewGameInit.cs" />
+    <Compile Include="Assets\Scripts\Save\Save.cs" />
+    <Compile Include="Assets\Scripts\Save\SaveGame.cs" />
     <Compile Include="Assets\Scripts\StickDistroy.cs" />
+    <None Include="Assets\gamesave.txt" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>E:/gitres/unityshixi/memoshixi/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

@@ -54,6 +54,13 @@ public static class RandomMap
                 canMap[i, j] = true;
             }
         }
+        for(int i = 0; i <= 7; i++)
+        {
+            for(int j = 0; j <= 7; j++)
+            {
+                putMap[(int)(-5 + i - minx),(int)(-1 + j - miny)] = false;
+            }
+        }
         GetRandomMap();
     }
     public static Vector2 PostoMap(Vector2 pos)
@@ -125,6 +132,7 @@ public static class RandomMap
             putMap[x, y] = false;
                 food.Add(pos);
         }
+        
     }
     static List<MapPoint> openList;
     static List<MapPoint> closeList;
@@ -141,6 +149,7 @@ public static class RandomMap
         originPoint.H= (Mathf.Abs(target.pos.x - originPoint.pos.x) + Mathf.Abs(target.pos.y - originPoint.pos.y)) * direct;
         //Debug.Log(originPoint.H);
         //Debug.Log(head.transform.position);
+        originPoint.hasParent = false;
         openList.Add(originPoint);
         for(int i = 0; i <= 100; i++)
         {
@@ -175,10 +184,12 @@ public static class RandomMap
     }
     static MapPoint SeekOpenList()//遍历openlist
     {
+        openList[0].F = openList[0].G + openList[0].H;
         float f = openList[0].F;
         MapPoint ret = openList[0];
         foreach (MapPoint p in openList)
         {
+            p.F = p.G + p.H;
             if (p.F < f)
             {
                 f = p.F;
@@ -203,7 +214,7 @@ public static class RandomMap
         MapPoint upLeft = new MapPoint(new Vector2(a.x - direct, a.y + direct)); upLeft.count = 1;
         MapPoint upRight = new MapPoint(new Vector2(a.x + direct, a.y + direct)); upRight.count = 1;
         MapPoint downLeft = new MapPoint(new Vector2(a.x - direct, a.y - direct)); downLeft.count = 1;
-        MapPoint downRight = new MapPoint(new Vector2(a.x + direct, a.y + direct)); downRight.count = 1;
+        MapPoint downRight = new MapPoint(new Vector2(a.x + direct, a.y - direct)); downRight.count = 1;
         List<MapPoint> near = new List<MapPoint>();
         near.Add(up);
         near.Add(down);
@@ -256,7 +267,7 @@ public static class RandomMap
             return true;
         if (p.count == 1)
         {
-            //Debug.Log(1);
+
             int index = near.IndexOf(p);
             if (index == 4)
             {
@@ -279,7 +290,7 @@ public static class RandomMap
                     return true;
             }
         }
-        // Debug.Log(2);
+     
         return false;
     }
     static List<Vector2> Finish(MapPoint target)

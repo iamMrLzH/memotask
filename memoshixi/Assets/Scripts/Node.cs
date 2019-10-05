@@ -5,7 +5,7 @@ using UnityEngine;
 public class Node : MonoBehaviour
 {
     public Vector3 position;//每一帧坐标
-    public static float redius = 1.78f;
+    public static float redius = 1.9f;
     public Rigidbody2D rig;
     public static float speed = 10f;
     public static float scale = 0.5f;//放缩

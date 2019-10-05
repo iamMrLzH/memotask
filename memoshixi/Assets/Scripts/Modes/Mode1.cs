@@ -1,41 +1,65 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class Mode1 : MonoBehaviour
 {
-    public float time = 0;
-    public float originSpeed;//加速时间
-    public float addSpeedTime = 5f;
+    public float originSpeed;
+    public float addSpeedTime = 0;//加速时间
     bool defence = false;//是否有护盾
     public float smartTime = 0;
     public LineRenderer line;
     public Head instance;
     List<Vector2> path = new List<Vector2>();
+    Image[] allImage;
+    Image HudunImage;
+    Text[] texts;
     // Start is called before the first frame update
     void Start()
     {
         instance = Head.instance;
         line = gameObject.GetComponent<LineRenderer>();
         originSpeed = Node.speed;
+        allImage = instance.GetComponentsInChildren<Image>();
+        foreach(Image a in allImage)
+        {
+            if (a.gameObject.name == "Image")
+                HudunImage = a;
+        }
+        texts = instance.GetComponentsInChildren<Text>(true);
+        addSpeedTime = 0;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         //this.position = transform.position; //跟新坐标
-        if (time > 0)
-            time -= Time.deltaTime;
+        if (addSpeedTime > 0)
+            addSpeedTime -= Time.fixedDeltaTime;
         else
             Node.speed = originSpeed;
         if (smartTime <= 0)
         {
+            instance.GetComponent<SpriteRenderer>().sprite = instance.headSprite;
             instance.HeadMove();
             line.positionCount = 0;//消掉线段
         }
-
         else
-            smartTime -= Time.deltaTime;
+            smartTime -= Time.fixedDeltaTime;
+        if (addSpeedTime < 4 && addSpeedTime > 1)
+        {
+            texts[1].GetComponent<CanvasGroup>().alpha = 1;
+            texts[1].text = ((int)addSpeedTime).ToString();
+        }
+        else
+            texts[1].GetComponent<CanvasGroup>().alpha = 0;
+        if (smartTime < 4 && smartTime > 1)
+        {
+            texts[0].GetComponent<CanvasGroup>().alpha = 1;
+            texts[0].text = ((int)smartTime).ToString();
+        }
+        else
+            texts[0].GetComponent<CanvasGroup>().alpha = 0;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -48,6 +72,7 @@ public class Mode1 : MonoBehaviour
             if (defence == true)
             {
                 defence = false;
+                HudunImage.GetComponent<CanvasGroup>().alpha = 0;
                 return;
             }
             Node.score -= 10;
@@ -62,18 +87,19 @@ public class Mode1 : MonoBehaviour
         if (collision.gameObject.tag == "AddSpeed")
         {
             Destroy(collision.gameObject);
-            time = addSpeedTime;
-            Node.speed *= 1.5f;
+
+            if (addSpeedTime <= 0)
+            {
+                addSpeedTime = 6f;
+                Node.speed *= 1.5f;
+            }
+            else
+                addSpeedTime = 6f;
             Node.score += 2;
         }
         if (collision.gameObject.tag == "Mogu")
         {
             Destroy(collision.gameObject);
-            if (defence == true)
-            {
-                defence = false;
-                return;
-            }
             int length = instance.snake.Count + 1;
             for (int i = 0; i <= length - 1; i++)
             {
@@ -85,6 +111,7 @@ public class Mode1 : MonoBehaviour
         {
             Destroy(collision.gameObject);
             defence = true;
+            HudunImage.GetComponent<CanvasGroup>().alpha = 1;
         }
         if (collision.gameObject.tag == "Grass")
         {
@@ -95,6 +122,7 @@ public class Mode1 : MonoBehaviour
             if (defence == true)
             {
                 defence = false;
+                HudunImage.GetComponent<CanvasGroup>().alpha = 0;
                 return;
             }
             if (instance.snake.Count + 1 <= 2)
@@ -108,22 +136,28 @@ public class Mode1 : MonoBehaviour
         if (collision.gameObject.tag == "SmartGrass")
         {
             Destroy(collision.gameObject);
-            smartTime = 3f;
-            EatSmartGrass();
+
+            if (smartTime <= 0)
+            {
+                instance.GetComponent<SpriteRenderer>().sprite = instance.dizzySprite;
+                smartTime = 6f;
+                StartCoroutine(MoveWithGrass());
+            }
+            else
+                smartTime = 6f;
         }
     }
     
-    public void EatSmartGrass()
+    public List<Vector2> EatSmartGrass()
     {
         if (RandomMap.food.Count == 0)
-            return;
+            return null;
         Vector2 next = RandomMap.food[0];
         foreach (Vector2 v in RandomMap.food)//找最近的食物
         {
             if (Vector3.Distance(transform.position, v) < Vector3.Distance(transform.position, next))
                 next = v;
         }
-        //Debug.Log(next);
         MapPoint target = new MapPoint(next);
         List<Vector2> path = new List<Vector2>();
         path = RandomMap.Astar(target);
@@ -132,67 +166,54 @@ public class Mode1 : MonoBehaviour
         {
             line.SetPosition(i, path[i]);
         }
-        StartCoroutine(MoveWithGrass(path));
-        //MoveWithGrass(path);
+        return path;
     }
-    IEnumerator MoveWithGrass(List<Vector2> path)
+    IEnumerator MoveWithGrass()
     {
-        //StartCoroutine(Timer());
-        //Debug.Log(path.Count + "////");
-        Vector2 start = path[0];
-        Vector2 end = path[1];
-        Vector2 dir = end - start;
-        //rig.velocity = new Vector2(dir.normalized.x * speed, dir.normalized.y * speed);
-        instance.rig.velocity = dir.normalized * Node.speed;
-        transform.up = instance.rig.velocity.normalized;
-        float distance = Vector3.Distance(transform.position, end);
-        while (distance > Node.redius * Node.scale)
+        while (true)
         {
-            distance = Vector3.Distance(transform.position, end);
-            yield return new WaitForFixedUpdate();
-        }
-        //yield return new WaitUntil(() => Vector3.Distance(transform.position, end) <= redius * scale * 0.1);
-        for (int index = 1; index <= path.Count - 2;)
-        {
-            int a = index;
-            while (index == a)
+            path = EatSmartGrass();
+            if (path == null)
             {
-                if (Vector3.Distance(transform.position, end) <= Node.redius * Node.scale)
-                {
-                    //Debug.Log(dir.normalized);
-                    start = transform.position;
-                    end = path[index + 1];
-                    dir = end - start;
-                    instance.rig.velocity = dir.normalized * Node.speed;
-                    transform.up = instance.rig.velocity.normalized;
-                    index++;
-                }
-                yield return new WaitForFixedUpdate();
-            }
-            // Debug.Log("?");
-            //yield return new WaitUntil(() => index!=a );
-            if (smartTime <= 0)
+                smartTime = 0;
                 yield break;
-        }
-        //Debug.Log("q");
-        start = transform.position;
-        dir = end - start;
-        // Debug.Log(dir);
-        // Debug.Log(end);
-        instance.rig.velocity = dir.normalized * Node.speed;
-        float dis = Vector3.Distance(transform.position, end);
-        //Debug.Log(dis);
-        //yield return new WaitUntil(() => Vector3.Distance(transform.position, end) <= redius * scale);
-        while (dis > Node.redius * Node.scale)
-        {
-            //Debug.Log("q");
+            }
+            Vector2 start = path[0];
+            Vector2 end = path[1];
+            Vector2 dir = end - start;
+            instance.rig.velocity = dir.normalized * Node.speed;
+            transform.up = instance.rig.velocity.normalized;
+            int a;
+            for (int index =1; index <= path.Count - 2;)
+            {
+                a = index;
+                while (index == a)
+                {
+                    if (Vector3.Distance(transform.position, end) <= Node.redius * Node.scale*0.5f)
+                    {
+                        start = transform.position;
+                        end = path[index + 1];
+                        dir = end - start;
+                        instance.rig.velocity = dir.normalized * Node.speed;
+                        transform.up = instance.rig.velocity.normalized;
+                        index++;
+                    }
+                    yield return new WaitForFixedUpdate();
+                }
+                if (smartTime <= 0)
+                    yield break;
+            }
             start = transform.position;
             dir = end - start;
-            instance.rig.velocity = dir.normalized * Node.speed;
-            dis = Vector3.Distance(transform.position, end);
-            yield return new WaitForFixedUpdate();
+            float dis = Vector3.Distance(start, end);
+            while (dis > Node.redius * Node.scale)
+            {
+                start = transform.position;
+                dir = end - start;
+                dis = Vector3.Distance(transform.position, end);
+                yield return new WaitForFixedUpdate();
+            }
         }
-        EatSmartGrass();
-        yield break;
+
     }
 }

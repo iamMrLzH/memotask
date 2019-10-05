@@ -13,7 +13,7 @@ public class MapPoint
     public float G=0;
     public float H=0;
     public int count = 0;
-    public float F { get { return G + H; } }
+    public float F = 0;
     public MapPoint(Vector2 v)
     {
         int sizex = (int)((v.x - minx) / direct);

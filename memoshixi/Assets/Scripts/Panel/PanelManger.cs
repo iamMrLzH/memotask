@@ -47,9 +47,15 @@ public class PanelManger : MonoBehaviour
                 btn.onClick.AddListener(delegate () { ImageChange(btn.name); });
             if (btn.name.Contains("Level")&&btn.name!="LevelPanel")
                 btn.onClick.AddListener(delegate () { LevelChoose(btn.name); });
+            if (btn.name == "LoadButton")
+                btn.onClick.AddListener(LoadGame);
         }
     }
-
+    void LoadGame()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Save");
+    }
     // Update is called once per frame
     void Update()
     {

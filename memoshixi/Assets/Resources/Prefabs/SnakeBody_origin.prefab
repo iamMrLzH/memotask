@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6101898217831675520}
   - component: {fileID: 3369476046367016925}
   - component: {fileID: -6288868877425000266}
+  - component: {fileID: 145777844519506051}
   m_Layer: 0
   m_Name: SnakeBody_origin
   m_TagString: Untagged
@@ -115,8 +116,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30e4a7ffb20e3fa4bbf00b27c6f1c895, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  redius: 1.78
+  position: {x: 0, y: 0, z: 0}
   rig: {fileID: 0}
-  speed: 10
-  scale: 0.5
+  pos: []
   instance: {fileID: 0}
+--- !u!58 &145777844519506051
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6641500022067581429}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1.01

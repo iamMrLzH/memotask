@@ -7,21 +7,28 @@ using UnityEngine.SceneManagement;
 public class Head : Node
 {
     public List<Node> snake = new List<Node>();//蛇身体
-    GameObject bodyObj;
+    public GameObject bodyObj;
     public Dictionary<string, AudioClip> clips = new Dictionary<string, AudioClip>();
     public AudioSource audi;
     public string sceneName;
     public static Head instance;
+    public Sprite Mode4Sprite;
+    public Sprite dizzySprite;
+    public Sprite headSprite;
     public int num { get { return (int)(redius * scale / speed / Time.fixedDeltaTime); } }
     private void Awake()
     {
         instance = this;
+        Mode4Sprite = Resources.Load<Sprite>("Mode4Line/WhiteBody");
+        sceneName = SceneManager.GetActiveScene().name;
     }
     // Start is called before the first frame update
     void Start()
     {
+        headSprite = Resources.Load<Sprite>("Snake/Snakehead" + Node.headSkin);
+        dizzySprite = Resources.Load<Sprite>("Snake/snakeDizzy" + Node.headSkin);
+        gameObject.GetComponent<SpriteRenderer>().sprite = headSprite;
         //Debug.Log(Time.timeScale);
-        sceneName = SceneManager.GetActiveScene().name;
         gameObject.tag = "Head";
         position = transform.position;
         bodyObj = (GameObject)Resources.Load<GameObject>("Prefabs/SnakeBody" + bodySkin);
@@ -39,6 +46,8 @@ public class Head : Node
         clips["Hudun"] = Resources.Load<AudioClip>("Sound/small trap");
         clips["SmartGrass"] = Resources.Load<AudioClip>("Sound/get energy");
         transform.localScale = new Vector3(scale, scale, 1);
+        if(SceneManager.GetActiveScene().name!="Save")
+            InitBody();
     }
 
     // Update is called once per frame
@@ -63,6 +72,20 @@ public class Head : Node
         }
         //Debug.Log(num);
         //Debug.Log(pos.Count);
+    }
+    void InitBody()
+    {
+        int bodys = 0;
+        bodys = 4;
+        if (sceneName == "Mode4")
+        {
+            bodys= (int)(GameInit.instance.width / 2 / (redius * scale))*2;
+        }
+        for(int i = 1; i <= bodys; i++)
+        {
+            Lengthadd();
+        }
+              
     }
     public void HeadMove() //移动控制以及旋转
     {
@@ -120,6 +143,7 @@ public class Head : Node
             if (sceneName == "Mode1")
                 RandomMap.food.Remove(collision.gameObject.transform.position);
             Lengthadd();
+            Node.score += 2;
         }
     }
     public void Die()

@@ -26,7 +26,7 @@ public class Mode4Map : MonoBehaviour
         width = (Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0)).x - minx) * 2;
         time = width / Node.speed;
         InitMap();//初始前两个地图
-        StartCoroutine(RangeMap());
+        StartCoroutine(RandomMap());
     }
 
     // Update is called once per frame
@@ -50,8 +50,49 @@ public class Mode4Map : MonoBehaviour
             Instantiate(RandomObjs[random4], new Vector2(width + minx, miny + height / 2), Quaternion.identity, nextMap.transform);
         }
     }
-    void RandomColor()
+    void RandomColor(GameObject nextMap)
     {
-
+        Transform[] allObjs = nextMap.GetComponentsInChildren<Transform>();
+        foreach(Transform obj in allObjs)
+        {
+            if (obj.parent!=nextMap.transform&&obj!=nextMap.transform)
+            {
+                obj.gameObject.AddComponent<ColorCheck>();
+               // Debug.Log(obj.name);
+                int color = Random.Range(0, 4);
+                if (color == 0)
+                    obj.GetComponent<SpriteRenderer>().color = Color.red;
+                if (color == 1)
+                    obj.GetComponent<SpriteRenderer>().color = Color.green;
+                if (color == 2)
+                    obj.GetComponent<SpriteRenderer>().color = Color.blue;
+                if (color == 3)
+                    obj.GetComponent<SpriteRenderer>().color = Color.yellow;
+            }
+        }
+    }
+    IEnumerator RandomMap()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(time);
+            minx += width;
+            maps.RemoveAt(0);//去除上个地图
+            GameObject nextMap = new GameObject();//添加下个地图
+            maps.Add(nextMap);
+            InitContents(nextMap);
+            RandomColor(nextMap);
+        }
+    }
+    void InitMap()
+    {
+        GameObject map1 = new GameObject();
+        maps.Add(map1);
+        Instantiate(line, new Vector2(width + minx, miny + height / 2), Quaternion.identity, map1.transform);
+        minx += width;
+        GameObject map2 = new GameObject();
+        maps.Add(map2);
+        InitContents(map2);
+        RandomColor(map2);
     }
 }

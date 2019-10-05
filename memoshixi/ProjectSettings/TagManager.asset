@@ -21,6 +21,7 @@ TagManager:
   - Level
   - Sphere
   - Diamond
+  - Color
   layers:
   - Default
   - TransparentFX
