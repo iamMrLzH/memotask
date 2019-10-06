@@ -4,18 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using Random = UnityEngine.Random;
+using UnityEngine.SceneManagement;
 
 public class Mode3Map : MonoBehaviour
 {
     float height;
     float width;
-    float minx;
+    public float minx;
     float miny;
     GameObject wall;
     GameObject sphere;
     GameObject diamond;
     float time=0;//走完一张地图需要时间
-    List<GameObject> maps = new List<GameObject>();
+    public List<GameObject> maps = new List<GameObject>();
     Sprite[] diaColor;
     // Start is called before the first frame update
     void Start()
@@ -29,9 +30,16 @@ public class Mode3Map : MonoBehaviour
         height = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0)).y-miny;
         width = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0)).x-minx;
         time = width / Node.speed;
-       // Debug.Log(height);
-        InitMap();//初始前两个地图
-        StartCoroutine(RangeMap());
+        // Debug.Log(height);
+        if (SceneManager.GetActiveScene().name != "Save")
+            InitMap();//初始前两个地图
+        else
+        {//保存回来时赋初值
+            minx = LoadInit.minx;
+            InitMap();
+        }
+        StartCoroutine(DelMap());
+        StartCoroutine(CreMap());
     }
 
     // Update is called once per frame
@@ -100,28 +108,40 @@ public class Mode3Map : MonoBehaviour
             }
         }
     }
-    IEnumerator RangeMap()
+    IEnumerator CreMap()
     {
         while (true)
         {
 
-            yield return new WaitForSeconds(time);
+            yield return new WaitForSeconds(time-0.5f);
             minx += width;
-            maps.RemoveAt(0);//去除上个地图
             GameObject nextMap = new GameObject();//添加下个地图
+            nextMap.tag = "Map3";
             maps.Add(nextMap);
             InitWall(nextMap);
             InitContents(nextMap);
             RandomText(nextMap);
         }
     }
+    IEnumerator DelMap()
+    {
+        while (true)
+        {
+
+            yield return new WaitForSeconds(time+0.5f);
+            Destroy(maps[0]);
+            maps.RemoveAt(0);//去除上个地图
+        }
+    }
     void InitMap()
     {
         GameObject map1 = new GameObject();
+        map1.tag = "Map3";
         InitWall(map1);
         maps.Add(map1);
         minx += width;
         GameObject map2 = new GameObject();
+        map2.tag = "Map3";
         InitWall(map2);
         maps.Add(map2);
     }

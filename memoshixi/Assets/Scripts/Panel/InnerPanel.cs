@@ -49,11 +49,11 @@ public class InnerPanel : MonoBehaviour
         //inPanel.AddComponent<CanvasGroup>();
         settingPanel.AddComponent<CanvasGroup>();
         Init();
-        camAudio = Camera.main.gameObject.AddComponent<AudioSource>();
+        camAudio = Camera.main.gameObject.GetComponent<AudioSource>();
         camAudio.loop = true;
         camAudio.clip = bgm;
         camAudio.Play();
-        canvAudio = gameObject.AddComponent<AudioSource>();
+        canvAudio = gameObject.GetComponent<AudioSource>();
         canvAudio.playOnAwake = false;
         canvAudio.loop = false;
         canvAudio.clip = btnSound;
@@ -79,9 +79,10 @@ public class InnerPanel : MonoBehaviour
         }
 
     }
-    void OnSaveClick()
+    void OnSaveClick()//存档
     {
         gameObject.GetComponent<SaveGame>().saveTheGame();
+        ReturnBtn();
     }
     // Update is called once per frame
     void Update()
@@ -127,9 +128,11 @@ public class InnerPanel : MonoBehaviour
     }
     void ReturnMainPanel()//回主菜单
     {
+        if (canvAudio.enabled == true)
+            canvAudio.Play();
         Node.score=0;
         Node.scale = 0.5f;
-        Node.redius = 1.78f;
+        Node.redius = 1.9f;
         if (canvAudio.enabled == true)
             canvAudio.Play();
         SceneManager.LoadScene("Start");//要切换到的场景名
@@ -168,17 +171,21 @@ public class InnerPanel : MonoBehaviour
     }
     void ResetGame()//重置游戏
     {
+        if (canvAudio.enabled == true)
+            canvAudio.Play();
         Time.timeScale = 1;
-        string name = SceneManager.GetActiveScene().name;
+        string name = Head.instance.sceneName;
         Node.score = 0;
         Node.scale = 0.5f;
-        Node.redius = 1.78f;
+        Node.redius = 1.9f;
         SceneManager.LoadSceneAsync(name);
     }
     void NextBtn()//下一关
     {
+        if (canvAudio.enabled == true)
+            canvAudio.Play();
         Time.timeScale = 1;
-        string name = SceneManager.GetActiveScene().name;
+        string name =  Head.instance.sceneName;
         if (name == "Level4")//***
             return;
         string last = name.Substring(5, 1);
@@ -202,15 +209,14 @@ public class InnerPanel : MonoBehaviour
         winPanel.GetComponent<CanvasGroup>().interactable = true;
         winPanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
-    public void HardSelect(Button btn)
+    public void HardSelect(Button btn)//难度选择
     {
-        if (btn.name == "Low")
-            Node.speed = 7;
-        if (btn.name == "Mid")
-            Node.speed = 10;
-        if (btn.name == "High")
-            Node.speed = 13;
-        Time.timeScale = 1;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+          if (btn.name == "Low")
+              Node.speed = 8;
+          if (btn.name == "Mid")
+              Node.speed = 10;
+          if (btn.name == "High")
+              Node.speed = 12;
+            ResetGame();
     }
 }

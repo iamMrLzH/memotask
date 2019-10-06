@@ -1,15 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Mode4Map : MonoBehaviour
 {
     float height;
     float width;
-    float minx;
+    public  float minx;
     float miny;
     float time = 0;//走完一张地图需要时间
-    List<GameObject> maps = new List<GameObject>();
+    public List<GameObject> maps = new List<GameObject>();
     GameObject[] RandomObjs;
     Sprite[] diaColor;
     GameObject line;
@@ -25,8 +26,17 @@ public class Mode4Map : MonoBehaviour
         height = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0)).y - miny;
         width = (Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0)).x - minx) * 2;
         time = width / Node.speed;
-        InitMap();//初始前两个地图
-        StartCoroutine(RandomMap());
+        if (SceneManager.GetActiveScene().name != "Save")
+            InitMap();//初始前两个地图
+        else
+        {
+            // Destroy(maps[0]);
+            // maps.RemoveAt(0);//去除上个地图
+            minx = LoadInit.minx;
+            InitMap();
+        }
+        StartCoroutine(DelMap());
+        StartCoroutine(CreMap());
     }
 
     // Update is called once per frame
@@ -71,26 +81,37 @@ public class Mode4Map : MonoBehaviour
             }
         }
     }
-    IEnumerator RandomMap()
+    IEnumerator CreMap()
     {
         while (true)
         {
-            yield return new WaitForSeconds(time);
+            yield return new WaitForSeconds(time-0.5f);
             minx += width;
-            maps.RemoveAt(0);//去除上个地图
             GameObject nextMap = new GameObject();//添加下个地图
+            nextMap.tag = "Map4";
             maps.Add(nextMap);
             InitContents(nextMap);
             RandomColor(nextMap);
         }
     }
+    IEnumerator DelMap()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(time+0.5f);
+            Destroy(maps[0]);
+            maps.RemoveAt(0);//去除上个地图
+        }
+    }
     void InitMap()
     {
         GameObject map1 = new GameObject();
+        map1.tag = "Map4";
         maps.Add(map1);
         Instantiate(line, new Vector2(width + minx, miny + height / 2), Quaternion.identity, map1.transform);
         minx += width;
         GameObject map2 = new GameObject();
+        map2.tag = "Map4";
         maps.Add(map2);
         InitContents(map2);
         RandomColor(map2);

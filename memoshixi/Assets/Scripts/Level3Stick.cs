@@ -8,7 +8,7 @@ public class Level3Stick : MonoBehaviour
     public List<GameObject> walls = new List<GameObject>();
     List<GameObject> upWalls = new List<GameObject>();
     List<GameObject> downWalls = new List<GameObject>();
-    float timeInternal = 2;
+    float timeInternal = 0.5f;
     public float speed;
     // Start is called before the first frame update
     void Start()

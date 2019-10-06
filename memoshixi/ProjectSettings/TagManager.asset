@@ -22,6 +22,8 @@ TagManager:
   - Sphere
   - Diamond
   - Color
+  - Map3
+  - Map4
   layers:
   - Default
   - TransparentFX

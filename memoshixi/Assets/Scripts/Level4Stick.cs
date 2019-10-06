@@ -6,7 +6,7 @@ public class Level4Stick : MonoBehaviour
 {
     GameObject stickPre;
     public List<GameObject> walls = new List<GameObject>();
-    float timeInternal = 2;
+    float timeInternal = 0.5f;
     public float speed;
     // Start is called before the first frame update
     void Start()

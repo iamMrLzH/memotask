@@ -371,7 +371,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 5653507759977317400}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 5d5155fe563e00d46825f70fcedefade, type: 2}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -394,9 +394,12 @@ MonoBehaviour:
   rig: {fileID: 7510179329846810607}
   pos: []
   snake: []
+  bodyObj: {fileID: 0}
   audi: {fileID: 0}
   sceneName: Mode1
   Mode4Sprite: {fileID: 0}
+  dizzySprite: {fileID: 0}
+  headSprite: {fileID: 0}
 --- !u!120 &6997506527032724608
 LineRenderer:
   m_ObjectHideFlags: 0

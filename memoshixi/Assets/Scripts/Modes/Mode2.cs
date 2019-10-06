@@ -15,7 +15,7 @@ public class Mode2 : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (SceneManager.GetActiveScene().name == "Mode3"||SceneManager.GetActiveScene().name=="Mode4")
+        if (instance.sceneName == "Mode3"||instance.sceneName=="Mode4")
             Mode3Move();
     }
     void Mode3Move()

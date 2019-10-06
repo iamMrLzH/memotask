@@ -18,6 +18,13 @@ public class Save
     public string color;
     public float headx;
     public float heady;
-    // public Dictionary<string, List<Vector3>> objs = new Dictionary<string, List<Vector3>>();
-    //public List<Vector2> headPos = new List<Vector2>();
+
+    //Mode3  Mode4
+    public Dictionary<string, List<float>> inMapsx = new Dictionary<string, List<float>>();
+    public Dictionary<string, List<float>> inMapsy = new Dictionary<string, List<float>>();
+    //public Dictionary<string, List<int>> inMapNum = new Dictionary<string, List<int>>();
+    public Dictionary<string, List<string>> text = new Dictionary<string, List<string>>();
+    public float minx;
+    public float scale;
+    public float redius;
 }
