@@ -25,6 +25,7 @@ public class InnerPanel : MonoBehaviour
     public AudioClip bgm;
     public AudioClip btnSound;
     public Button nextBtn;//处理第四关
+    public float scale = 0.25f;
     public void Awake()
     {
         instance = this;
@@ -131,7 +132,7 @@ public class InnerPanel : MonoBehaviour
         if (canvAudio.enabled == true)
             canvAudio.Play();
         Node.score=0;
-        Node.scale = 0.5f;
+        Node.scale = scale;
         Node.redius = 1.9f;
         if (canvAudio.enabled == true)
             canvAudio.Play();
@@ -176,7 +177,7 @@ public class InnerPanel : MonoBehaviour
         Time.timeScale = 1;
         string name = Head.instance.sceneName;
         Node.score = 0;
-        Node.scale = 0.5f;
+        Node.scale = scale;
         Node.redius = 1.9f;
         SceneManager.LoadSceneAsync(name);
     }
